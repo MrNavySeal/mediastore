@@ -1,0 +1,14 @@
+@import "variable";
+.table-cart{
+    tbody{
+        a{
+            text-decoration: none;
+            color:#000;
+        }
+        tr{
+            td{
+                vertical-align: middle;
+            }
+        }
+    }
+}

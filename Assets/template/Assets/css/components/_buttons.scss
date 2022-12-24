@@ -1,0 +1,17 @@
+@import "variable";
+.btnc{
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    text-decoration: none;
+}
+.btnc-primary{
+    background-color: $first-color;
+    color:$third-color;
+    transition: all ease 0.1s;
+    &:hover{
+        transition: all ease 0.1s;
+        background-color: $second-color;
+        color:$third-color;
+    }
+}

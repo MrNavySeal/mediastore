@@ -1,0 +1,466 @@
+@import "variable";
+
+header{
+    height: 60px;
+    width: 100%;
+    background-color: #fff;
+    color:#000;
+    position: fixed;
+    z-index: 1000;
+}
+.nav-custom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    padding: 0 20px;
+}
+.nav-search{
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+}
+.nav-search-open{
+    display: block;
+    position: absolute;
+    z-index: 11;
+    height: 40px;
+    width: 0;
+    animation-name: searchOpen;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards;
+    button{
+        width: 50px;
+        height: 100%;
+        background-color: $second-color;
+        color:$third-color;
+        &:hover{
+            background-color: $second-color;
+            color:$third-color;
+        }
+    }
+    input{
+        height: 100%;
+        width: 100%;
+    }
+    input:focus{
+        outline: $second-color;
+    }
+    #btnCloseSearch{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 50px;
+        background-color: $second-color;
+        color:$third-color;
+        font-size: 30px;
+        cursor: pointer;
+    }
+    @keyframes searchOpen {
+        0%{
+            width: 1%;
+            opacity: 0.5;
+        }25%{
+            width: 1%;
+            opacity: 1;
+        }50%{
+            width: 1%;
+            opacity: 0.5;
+        }100%{
+            opacity: 1;
+            width:95%;
+        }
+    }
+}
+.nav-search-close{
+    display: block;
+    position: absolute;
+    height: 40px;
+    width: 70%;
+    z-index: 11;
+    animation-name: searchClose;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards;
+    button{
+        width: 50px;
+        height: 100%;
+        background-color: $second-color;
+        color:$third-color;
+        &:hover{
+            background-color: $second-color;
+            color:$third-color;
+        }
+    }
+    input{
+        height: 100%;
+        width: 100%;
+    }
+    #btnCloseSearch{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        height: 100%;
+        width: 50px;
+        background-color: $second-color;
+        color:$third-color;
+        top:0;
+        right:0;
+        font-size: 30px;
+        cursor: pointer;
+    }
+    @keyframes searchClose {
+        0%{
+            opacity: 0.5;
+        }25%{
+            width: 1%;
+            opacity: 1;
+        }50%{
+            width: 1%;
+            opacity: 0.5;
+        }100%{
+            display: none;
+            opacity: 0;
+            width:0;
+        }
+    }
+}
+.nav-logo{
+    position: relative;
+    margin-right: 200px;
+    font-size: 25px;
+    left: 0;
+    transition: 0.2s 0.5s all ease;
+    a{
+        text-decoration: none;
+        color: #000;
+        display: flex;
+        align-items: center;
+        img{
+          height: 50px;
+          width: 60px;  
+          margin-right: 10px;
+        }
+    }
+}
+.nav-logo.active{
+    opacity: 0;
+    transition: 0.2s 0.5s all ease;
+}
+.nav-main{
+    position: relative;
+    margin-right: 200px;
+    opacity: 1;
+    transition: 0.2s 0.5s all ease;
+    ul{
+        list-style:none;
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        
+        li{
+            position: relative;
+            margin-right:50px;
+            a{
+                color: #000;
+                text-decoration: none;
+            }
+            &::after{
+                content: " ";
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                height: 4px;
+                width: 0;
+                background-color: $first-color;
+                transition: 0.3s;
+            }
+            &:hover{
+                &::after{
+                    width: 100%;
+                    transition: 0.3s;
+                }
+            }
+        }
+        li.active{
+            &::after{
+                content: " ";
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                height: 4px;
+                width: 100%;
+                background-color: $first-color;
+        
+            }
+        }
+    }
+}
+.nav-main.active{
+    opacity: 0;
+    transition: 0.2s 0.5s all ease;
+}
+.nav-icons{
+    position: relative;
+    right:0;
+    transition: 0.2s 0.5s all ease;
+    .nav-icons-btns{
+        list-style:none;
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        li{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right:20px;
+            a{
+                color: #000;
+                text-decoration: none;
+            }
+        }
+        div{
+            a{
+                color:#000;
+            }
+        }
+    }
+}
+.nav-icons.active{
+    opacity: 0;
+    transition: 0.2s 0.5s all ease;
+}
+.nav-icons-qty{
+    position: relative;
+    span{
+        position: absolute;
+        top:0;
+        left:12px;
+        border-radius: 50%;
+        padding: 1px 5px;
+        font-size: 10px;
+        background-color: #ff0000;
+    }
+}
+.nav-mobile{
+    position: fixed;
+    z-index:10;
+    top: 0;
+    left:-100%;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.0);
+    transition: all ease 0.3s;
+}
+.nav-mobile-main{
+    position: fixed;
+    top:0;
+    right:-100%;
+    height: 100vh;
+    width: 80%;
+    background-color:$second-color;
+    padding: 20px;
+    z-index: 20;
+    transition: all ease 0.3s;
+    .nav-logo{
+        font-size: 25px;
+        a{
+            text-decoration: none;
+            color: $third-color;
+        }
+    }
+    ul{
+        list-style: none;
+        font-size: 20px;
+        padding: 0;
+        li{
+            padding: 5px;
+            margin:20px 0;
+            transition: all ease 0.3s;
+            &:hover{
+                background-color: $first-color;
+                padding-left: 20px;
+                transition: all ease 0.3s;
+            }
+            a{
+                color: $third-color;
+                text-decoration: none;
+            }
+            
+        }
+        li.active{
+            background-color: $first-color;
+            padding-left: 20px;
+            transition: all ease 0.3s;
+        }
+
+    }
+}
+.nav-mobile.active{
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.363);
+    transition: all ease 0.3s;
+}
+.nav-mobile-main.active{
+    right: 0;
+    transition: all ease 0.3s;
+}
+#btnToggleNav{
+    display: none;
+    position: relative;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 0;
+    i{
+        font-size: 25px;
+    }
+}
+.cart-panel{
+    position: fixed;
+    top: 0;
+    left:-100%;
+    height: 100vh;
+    width: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0);
+    transition: all ease 0.3s;
+}
+.cart-panel-title{
+    font-size: 25px;
+    text-decoration: none;
+    color: $second-color;
+}
+.cart-panel-main{
+    position: fixed;
+    top:0;
+    right:-100%;
+    height: 100vh;
+    width: 30%;
+    background-color:#fff;
+    padding: 20px;
+    z-index: 20;
+    transition: all ease 0.3s;
+    
+}
+.cart-panel-items{
+    margin:20px 0;
+    max-height: 60vh;
+}
+.cart-panel-item{
+    margin: 10px 0;
+    padding-left: 110px;
+    height: 100px;
+    position: relative;
+    color:#000;
+    img{
+        position: absolute;
+        top:0;
+        left:0;
+        height: 100%;
+        width: 100px;
+        padding: 10px;
+    }
+    h3{
+        font-size: 18px;
+        a{
+            text-decoration: none;
+            color:#000;
+        }
+    }
+    p{
+        margin: 0;
+    }
+    
+}
+.cart-panel.active{
+    left:0;
+    background-color: rgba(0, 0, 0, 0.363);
+    
+}
+.cart-panel-main.active{
+    right:0;
+    transition: all ease 0.3s;
+}
+#btnToggleCart{
+    cursor: pointer;
+}
+#btnCloseCart{
+    color: $second-color;
+    cursor: pointer;
+}
+.search-items{
+    min-height: 110px;
+    max-height: 90vh;
+    overflow-y: scroll;
+    width: 100%;
+    background-color: #f5f7fa99; 
+}
+.search-item{
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #fff;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.search-item-info{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.search-item-img{
+    position: relative;
+    padding-right: 5px;
+    img{
+        width: 60px;
+        height: 100%;
+    }
+    div{
+        position: absolute;
+        top:0;
+        left:0;
+        padding: 1px 3px;
+        background-color: $third-color;
+        border: 1px solid $first-color;
+        font-size: 12px;
+        color:$first-color;
+    }
+}
+.search-item-data{
+    h2{
+        font-size: 12px;
+        margin: 0;
+        height: 30px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .product-rate{
+        text-align: start;
+        i{
+            font-size: 10px;
+        }
+    }
+    p{
+        font-size: 12px;
+    }
+}
+.search-item-actions{
+    display: flex;
+    align-items: center;
+    div{
+        font-size: 12px;
+        background-color: #fff;
+        border: 1px solid #000;
+        border-radius: 5px;
+        color:#000;
+        padding: 2px 5px;
+        margin-right:5px;
+    }
+}

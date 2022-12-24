@@ -1,0 +1,124 @@
+@import "components/normalize"; 
+@import "components/variable";
+@import "components/header";
+@import "components/loading";
+@import "components/footer";
+@import "components/util";
+@import "components/buttons";
+@import "components/parts";
+@import "components/shop";
+@import "components/home";
+@import "components/about";
+@import "components/contact";
+@import "components/cart";
+@import "components/login";
+@import "components/post";
+@import "components/mediaqueries";
+
+main{
+    padding-top: 60px;
+}
+.accordion-item {
+    background-color: #fff;
+    border: none;
+}
+.accordion-button{
+    padding: 10px;
+}
+.accordion-body{
+    padding: 5px 0 5px 5px;
+    a, a:hover, a:focus, a:active {
+        text-decoration: none;
+        color: #000;
+      }
+}
+.accordion-button:not(.collapsed) {
+    color: #000;
+    background-color: #FFF;
+    box-shadow: none;
+}
+.accordion-button:focus {
+    border: none;
+    box-shadow: none;
+    color:$first-color;
+}
+.list-group-item {
+    border: none;
+}
+.accordion-header{
+    position: relative;
+    a{
+        font-size: 16px;
+        padding: 10px;
+        position: absolute;
+        top:50%;
+        left:0;
+        transform: translateY(-50%);
+        z-index: 3;
+    }
+}
+.popup{
+    width: 300px;
+    height: 125px;
+    position: fixed;
+    right: -100%;
+    bottom:10px;
+    background-color: #fff;
+    border: 1px solid $first-color;
+    padding: 10px;
+    z-index: 100;
+    transition:0.3s;
+    .popup-close{
+        position: absolute;
+        top:2px;
+        right: 5px;
+        cursor: pointer;
+    }
+    .popup-info{
+        display: flex;
+        height: 50px;
+        font-size: 15px;
+        overflow: hidden;
+        a{
+            text-decoration: none;
+            color:#000;
+            font-weight: bold;
+        }
+        p{
+            margin: 0;
+        }
+        img{
+            margin-right: 10px;
+            width: 50px;
+            height: 100%;
+        }
+    }
+}
+.popup.active{
+    right:10px;
+    transition:0.3s;
+}
+.nav-link {
+    color: #000;
+    &:hover{
+        color: #000;
+    }
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #000;
+    background-color: #fff;
+    &::after{
+        content:" ";
+        position: absolute;
+        bottom: 0;
+        left:0;
+        width: 100%;
+        height: 5px;
+        background-color: $second-color;
+
+    }
+}
+.btn-check:focus+.btn, .btn:focus {
+    outline: 0;
+    box-shadow: none;
+}

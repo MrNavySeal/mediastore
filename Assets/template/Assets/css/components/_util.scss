@@ -1,0 +1,85 @@
+@import "variable";
+.list-none{
+    list-style: none;
+}
+.scroll-y{
+    overflow-y: scroll;
+}
+.scroll-x{
+    overflow-x: scroll;
+}
+.t-p{
+    color:$first-color;
+}
+.t-s{
+    color:$second-color;
+}
+.t-w{
+    color:$third-color;
+}
+.c-p{
+    cursor: pointer;
+}
+.c-d{
+    cursor:default;
+}
+.bg-p{
+    background-color: $first-color;
+}
+.bg-s{
+    background-color: $second-color;
+}
+.bg-w{
+    background-color: $third-color;
+}
+.bg-d{
+    background-color: #ff0000;
+}
+.af-b-line{
+    &::after{
+        content: " ";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: $first-color;
+    }
+}
+.af-t-line{
+    &::after{
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: $first-color;
+    }
+}
+.af-s-line{
+    &::after{
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 2px;
+        height: 100%;
+        background-color: $first-color;
+    }
+}
+.af-e-line{
+    &::after{
+        content: " ";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 2px;
+        height: 100%;
+        background-color: $first-color;
+    }
+}
+
+.text-danger{
+    color:#ff0000 !important;
+}

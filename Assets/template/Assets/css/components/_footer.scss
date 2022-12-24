@@ -1,0 +1,40 @@
+@import "variable";
+footer{
+    position: relative;
+    width: 100%;
+    background-color: $third-color;
+    &::before{
+        content:" ";
+        background-color: $first-color;
+        height: 5px;
+        width: 100%;
+        position: absolute;
+        top:0;
+        left:0;
+    }
+    &::after{
+        content:" ";
+        background-color: $first-color;
+        height: 5px;
+        width: 100%;
+        position: absolute;
+        bottom:0;
+        left:0;
+    }
+    .footer-social{
+        a{
+            margin-right: 5px;
+            padding: 6px 12px;
+            border: 1px solid $second-color;
+            border-radius: 50%;
+            background-color: $second-color;
+            color:$third-color;
+            transition: 0.3s;
+            &:hover{
+                background-color: $third-color;
+                color:$second-color;
+                transition: 0.3s;
+            }
+        }
+    }
+}
