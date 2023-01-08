@@ -24,7 +24,13 @@
                     <input type="hidden" id="idProduct" name="idProduct" value="">
                     <div class="row">
                         <p class="text-center">Todos los campos con (<span class="text-danger">*</span>) son obligatorios.</p>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="txtReference" class="form-label">Referencia</label>
+                                <input type="text" class="form-control" id="txtReference" name="txtReference">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="txtName" class="form-label">Nombre <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="txtName" name="txtName" required>
@@ -84,14 +90,14 @@
                             <div class="row mt-3">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="txtPrice" class="form-label">Precio <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" min ="1" id="txtPrice" name="txtPrice">
+                                        <label for="txtPrice" class="form-label">Precio</label>
+                                        <input type="number" class="form-control" value="0" id="txtPrice" name="txtPrice">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="txtStock" class="form-label">Cantidad <span class="text-danger">*</span></label>
-                                        <input type="number" value="1" min="0" class="form-control" id="txtStock" name="txtStock">
+                                        <label for="txtStock" class="form-label">Cantidad</label>
+                                        <input type="number" value="0" class="form-control" id="txtStock" name="txtStock">
                                     </div>
                                 </div>
                             </div>

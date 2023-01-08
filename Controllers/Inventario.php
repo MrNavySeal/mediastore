@@ -161,40 +161,51 @@
             die();
         }
         public function setProduct(){
-            //dep($_POST);exit;
+            dep($_POST);exit;
             if($_SESSION['permitsModule']['r']){
                 if($_POST){
+                    
                     if(empty($_POST['txtName']) || empty($_POST['statusList']) || empty($_POST['categoryList'])
-                    || empty($_POST['subcategoryList']) || empty($_POST['txtPrice']) || empty($_POST['txtStock'])){
+                    || empty($_POST['subcategoryList']) || empty($_POST['txtShortDescription'])){
                         $arrResponse = array("status" => false, "msg" => 'Error de datos');
                     }else{ 
+                        $productType = boolval($_POST['producttype']);
                         $idProduct = intval($_POST['idProduct']);
                         $strReference = strtoupper(strClean($_POST['txtReference']));
                         $strName = ucwords(strClean($_POST['txtName']));
                         $strShortDescription = strClean($_POST['txtShortDescription']);
                         $idCategory = intval($_POST['categoryList']);
                         $idSubcategory = intval($_POST['subcategoryList']);
-                        $intPrice = intval($_POST['txtPrice']);
-                        $intDiscount = intval($_POST['txtDiscount']);
-                        $intStock =  intval($_POST['txtStock']);
-                        $intStatus = intval($_POST['statusList']);
                         $strDescription = strClean($_POST['txtDescription']);
-                        
+                        $photos = json_decode($_POST['images'],true);
                         $route = clear_cadena($strName);
                         $route = strtolower(str_replace("¿","",$route));
                         $route = str_replace(" ","-",$route);
                         $route = str_replace("?","",$route);
-
-                        $photos = json_decode($_POST['images'],true);
+                        $intStock =  intval($_POST['txtStock']);
+                        $intPrice = intval($_POST['txtPrice']);
+                        $intDiscount = intval($_POST['txtDiscount']);
+                        $intStatus = intval($_POST['statusList']);
+                        $option ="";
+                        $request="";
                         if($idProduct == 0){
-                            if($_SESSION['permitsModule']['w']){
-                                $option = 1;
-                                $request= $this->model->insertProduct($idCategory,$idSubcategory,$strReference,$strName,$strShortDescription,$strDescription,$intPrice,$intDiscount,$intStock,$intStatus,$route,$photos);
+                            if($productType){
+                                if($_SESSION['permitsModule']['w']){
+                                    $option = 1;
+                                    $request= $this->model->insertProduct($idCategory,$idSubcategory,$strReference,$strName,$strShortDescription,$strDescription,$specs,$intPrice,$intDiscount,$intStock,$intStatus,$route,$photos);
+                                }
+                            }else{
+                                if($_SESSION['permitsModule']['w']){
+                                    $option = 1;
+                                    $request= $this->model->insertProductV($idCategory,$idSubcategory,$strReference,$strName,$strShortDescription,$strDescription,$specs,$variants,$variantsValues,$intStatus,$route,$photos);
+                                }
                             }
                         }else{
-                            if($_SESSION['permitsModule']['u']){
-                                $option = 2;
-                                $request= $this->model->updateProduct($idProduct,$idCategory,$idSubcategory,$strReference,$strName,$strShortDescription,$strDescription,$intPrice,$intDiscount,$intStock,$intStatus,$route,$photos);
+                            if($productType){
+                                if($_SESSION['permitsModule']['u']){
+                                    $option = 2;
+                                    $request= $this->model->updateProduct($idProduct,$idCategory,$idSubcategory,$strReference,$strName,$strShortDescription,$strDescription,$intPrice,$intDiscount,$intStock,$intStatus,$route,$photos);
+                                }
                             }
                         }
                         if($request > 0 ){

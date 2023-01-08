@@ -27,6 +27,7 @@ window.addEventListener("load",function(){
     form.addEventListener("submit",function(e){
         e.preventDefault();
         tinymce.triggerSave();
+        let data = new FormData(form);
         let strName = document.querySelector("#txtName").value;
         let intDiscount = document.querySelector("#txtDiscount").value;
         let intPrice = document.querySelector("#txtPrice").value;
@@ -36,8 +37,16 @@ window.addEventListener("load",function(){
         let intSubCategory = subcategoryList.value;
         let intCategory = categoryList.value;
         let images = document.querySelectorAll(".upload-image");
-
-        if(strName == "" || intStatus == "" || intCategory == 0 || intSubCategory==0 || intPrice=="" || intStock==""){
+        let productType = document.querySelector("#simple-tab").className.includes("active") ? true : false;
+        let specs = {
+            "warrany": document.querySelector("#txtWarranty").value,
+            "mark":document.querySelector("#txtMark").value,
+            "weight":document.querySelector("#txtWeight").value,
+            "length":document.querySelector("#txtLength").value,
+            "width":document.querySelector("#txtWidth").value,
+            "height":document.querySelector("#txtHeight").value
+        };
+        if(strName == "" || intStatus == "" || intCategory == 0 || intSubCategory==0 || strShortDescription ==""){
             Swal.fire("Error","Todos los campos marcados con (*) son obligatorios","error");
             return false;
         }
@@ -47,19 +56,58 @@ window.addEventListener("load",function(){
         }
         if(images.length < 1){
             Swal.fire("Error","Debe subir al menos una imagen","error");
+        }
+
+        if(productType){
+            if(intPrice=="" || intStock==""){
+                Swal.fire("Error","El precio y la cantidad son obligatorios","error");
+                return false;
+            }
+            if(intPrice < 0){
+                Swal.fire("Error","El precio no puede ser menor que cero ","error");
+                return false;
+            }
+            if(intStock < 0){
+                Swal.fire("Error","La cantidad no puede ser menor que cero ","error");
+                return false;
+            }
+        }else{
+            let arrData =orderVariantValues(1);
+            let variantsValues =[];
+            if(arrData.length <=0){
+                Swal.fire("Error","Por favor, ingresa al menos una variante","error");
+                return false; 
+            }
+            let variants = document.querySelectorAll(".variantCombination");
+            let flag =true;
+            for (let i = 0; i < variants.length; i++) {
+                let variantName = variants[i].children[0].innerHTML;
+                let variantPrice = variants[i].children[1].children[0].children[0].value;
+                let variantQty = variants[i].children[2].children[0].children[0].value;
+                
+                if(variantPrice < 0 || variantQty < 0){
+                    Swal.fire("Error","El precio y la cantidad de la variante ("+variantName+") debe ser igual o mayor que cero","error");
+                    flag = false;
+                    break;
+                }
+                let obj = {"name":variantName,"price":variantPrice,"qty":variantQty};
+                variantsValues.push(obj);
+            }
+            if(!flag){
+                return false;
+            }
+            data.append("variants",JSON.stringify(arrData));
+            data.append("variantsvalues",JSON.stringify(variantsValues));
+
+        }
+        if(images.length < 1){
+            Swal.fire("Error","Debe subir al menos una imagen","error");
             return false;
         }
-        if(intPrice <= 0){
-            Swal.fire("Error","El precio no puede ser menor o igual que 0 ","error");
-            return false;
-        }
-        if(intStock <= 0){
-            Swal.fire("Error","La cantidad no puede ser menor o igual a 0 ","error");
-            return false;
-        }
+        
         if(intDiscount !=""){
             if(intDiscount < 0){
-                Swal.fire("Error","El descuento no puede ser inferior a 0","error");
+                Swal.fire("Error","El descuento no puede ser inferior a 0","error"); 
                 document.querySelector("#txtDiscount").value="";
                 return false;
             }else if(intDiscount > 90){
@@ -74,15 +122,16 @@ window.addEventListener("load",function(){
         }
         
         
-        let data = new FormData(form);
+        data.append("specs",JSON.stringify(specs));
         data.append("images",JSON.stringify(arrImg));
+        data.append("producttype",productType);
         btnAdd.innerHTML=`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
         btnAdd.setAttribute("disabled","");
 
         request(base_url+"/inventario/setProduct",data,"post").then(function(objData){
-            form.reset();
-            formFile.reset();
             if(objData.status){
+                form.reset();
+                formFile.reset();
                 Swal.fire("Added",objData.msg,"success");
                 let divImg = document.querySelectorAll(".upload-image");
                 for (let i = 0; i < divImg.length; i++) {
@@ -158,35 +207,85 @@ function addVariantValue(element){
     span.innerHTML= optionValue+` <i class="fas fa-times"></i>`;
     variantValues.appendChild(span);
     element.previousElementSibling.value ="";
-    setCombination();
+    orderVariantValues();
 }
-function setCombination(){
+function orderVariantValues(option=null){
     let variantInput = document.querySelectorAll(".variantItem");
+    let arrData=[];
+    if(variantInput.length>0){
+        for (let i = 0; i < variantInput.length; i++) {
+            let attrName = variantInput[i].children[0].children[1].children[1].value;
+            let variantValues = variantInput[i].children[1].children[2].children[0].children;
+            if(i >=3)break;
+            if(variantValues.length>0){
+                let attrData = [];
+                for (let j = 0; j < variantValues.length; j++) {
+                    attrData.push(variantValues[j].getAttribute("data-value"));
+                }
+                let attributes = {"nombre":attrName,"opciones":attrData};
+                arrData.push(attributes);
+            }
+        }
+    }
+    if(option==null){
+        setCombination(arrData);
+    }else{
+        return arrData;
+    }
+}
+function setCombination(array){
+    let variants=[];
+    if(array.length > 0){
+        let options1 =array[0].opciones;
+        let options2=[];
+        let options3=[];
+        if(array.length > 1){
+            options2 = array[1].opciones;
+            if(array.length > 2){
+                options3 = array[2].opciones;
+            }
+        }
+        for (let i = 0; i < options1.length; i++) {
+            if(options2.length>0){
+                for (let j = 0; j < options2.length; j++) {
+                    if(options3.length > 0){
+                        for (let k = 0; k < options3.length; k++) {
+                            variants.push(options1[i]+"-"+options2[j]+"-"+options3[k]);
+                        }
+                    }else{
+                        variants.push(options1[i]+"-"+options2[j]);
+                    }
+                }
+            }else{
+                variants.push(options1[i]);
+            }
+        }
+    }
+    displayVariants(variants);
+}
+function displayVariants(array){
     let html="";
     let listItem = document.querySelector("#listItem");
-    for (let i = 0; i < variantInput.length; i++) {
-        let variantValues = variantInput[i].children[1].children[2].children[0].children;
-        for (let j = 0; j < variantValues.length; j++) {
-            let variant = variantValues[j].getAttribute("data-value");
-            if(i == 1){
-                
-            }
+    if(array.length>0){
+        for (let i = 0; i < array.length; i++) {
             html+=`
             <tr class="variantCombination">
-                <td data-label="Variante: ">${variant}</td>
-                <td data-label="Precio: "><div class="d-flex justify-content-end"><input type="number" value="1" min="0" class="form-control w-25 text-center"></div></td>
-                <td data-label="Cantidad: "><div class="d-flex justify-content-end"><input type="number" value="1" min="0" class="form-control w-25 text-center"></div></td>
+                <td data-label="Variante: ">${array[i]}</td>
+                <td data-label="Precio: "><div class="d-flex justify-content-end"><input type="number" value="0" class="form-control w-50 text-center"></div></td>
+                <td data-label="Cantidad: "><div class="d-flex justify-content-end"><input type="number" value="0" class="form-control w-50 text-center"></div></td>
             </tr>
             `;
         }
     }
-    listItem.innerHTML =html;
+    listItem.innerHTML = html;
 }
 function delVariant(element){
     element.parentElement.parentElement.parentElement.remove();
+    orderVariantValues();
 }
 function delVariantValue(element){
-    element.remove();
+    element.remove();     
+    orderVariantValues();  
 }
 function setImage(element,parent,option){
     let formFile = document.querySelector("#formFile");
